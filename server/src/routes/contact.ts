@@ -1,5 +1,6 @@
 import express from 'express';
 import { pool } from '../config/db';
+import { ResultSetHeader } from 'mysql2';
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body;
   try {
-    const [result] = await pool.query(
+    const [result] = await pool.query<ResultSetHeader>(
       'INSERT INTO messages (name, email, message) VALUES (?, ?, ?)',
       [name, email, message]
     );
